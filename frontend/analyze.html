@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Analyze | Amazon Monitor</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+    <div class="logo">
+        Amazon Monitor // Analysis
+    </div>
+
+    <div class="nav-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="analyze.html">
+            Analyze
+        </a>
+
+        <a href="index.html#about">
+            About
+        </a>
+
+    </div>
+
+</nav>
+
+
+<main class="analyze-page">
+
+
+    <div class="page-heading">
+
+        <div class="badge">
+            Mission 04 / Image Analysis
+        </div>
+
+        <h1>
+            Observation image analysis
+        </h1>
+
+        <p>
+            Load a rainforest observation frame into the classification console.
+            The model will return every land-cover signal above the configured threshold.
+        </p>
+
+    </div>
+
+
+    <!-- SERVER STATUS -->
+
+    <div
+        id="server-status"
+        class="server-status checking"
+    >
+
+        <span class="status-dot"></span>
+
+        <span id="status-text">
+            Connecting to AI server...
+        </span>
+
+    </div>
+
+
+    <!-- UPLOAD -->
+
+    <div class="upload-container">
+
+        <div
+            id="drop-area"
+            class="drop-area"
+        >
+
+            <div class="upload-icon">
+                🛰️
+            </div>
+
+            <h2>
+                Load observation frame
+            </h2>
+
+            <p>
+                Drag and drop an image into the intake bay
+            </p>
+
+            <p class="or">
+                or
+            </p>
+
+
+            <label
+                for="image-input"
+                class="choose-btn"
+            >
+                Select image
+            </label>
+
+
+            <input
+                type="file"
+                id="image-input"
+                accept="image/png,image/jpeg"
+                hidden
+            >
+
+
+            <small>
+                Accepted telemetry: JPG / JPEG / PNG
+            </small>
+
+        </div>
+
+
+        <!-- PREVIEW -->
+
+        <div
+            id="preview-section"
+            class="preview-section hidden"
+        >
+
+            <div class="preview-image-container">
+
+                <img
+                    id="image-preview"
+                    alt="Satellite image preview"
+                >
+
+            </div>
+
+
+            <div class="file-info">
+
+                <div class="small-label">
+                    SELECTED IMAGE
+                </div>
+
+                <h3 id="file-name">
+                    image.jpg
+                </h3>
+
+
+                <button
+                    id="analyze-btn"
+                    class="btn"
+                >
+                    🤖 Analyze Image
+                </button>
+
+
+                <button
+                    id="remove-btn"
+                    class="secondary-btn"
+                >
+                    Remove
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div
+        id="loading"
+        class="loading hidden"
+    >
+
+        <div class="spinner"></div>
+
+        <h2>
+            Analyzing Satellite Image
+        </h2>
+
+        <p>
+            EfficientNetB0 is processing the image...
+        </p>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <section
+        id="results"
+        class="results hidden"
+    >
+
+        <div class="results-header">
+
+            <div>
+
+                <div class="badge">
+                    AI ANALYSIS COMPLETE
+                </div>
+
+                <h2>
+                    Classification Results
+                </h2>
+
+                <p>
+                    Detected rainforest patterns
+                </p>
+
+            </div>
+
+
+            <button
+                id="new-analysis"
+                class="secondary-btn"
+            >
+                + New Analysis
+            </button>
+
+        </div>
+
+
+        <div class="result-grid">
+
+
+            <!-- IMAGE -->
+
+            <div class="result-card">
+
+                <div class="section-title">
+                    Satellite Image
+                </div>
+
+                <img
+                    id="result-image"
+                    class="result-image"
+                    alt="Analyzed satellite image"
+                >
+
+            </div>
+
+
+            <!-- PREDICTIONS -->
+
+            <div class="result-card">
+
+                <div class="section-title">
+                    Detected Classes
+                </div>
+
+                <div
+                    id="prediction-list"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <strong>About the prediction</strong>
+
+            <p>
+                The model performs multi-label classification,
+                meaning one satellite image can contain multiple
+                detected classes simultaneously.
+            </p>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+    Amazon Rainforest Monitor
+    <span>•</span>
+    EfficientNetB0
+</footer>
+
+
+<script src="analyze.js"></script>
+
+</body>
+
+</html>

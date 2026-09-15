@@ -4,3 +4,4 @@ flask-cors
 tensorflow
 pillow
 numpy
+twilio

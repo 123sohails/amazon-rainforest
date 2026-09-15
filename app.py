@@ -4,6 +4,7 @@ import tensorflow as tf
 from PIL import Image
 import numpy as np
 import os
+from twilio.rest import Client
 
 app = Flask(__name__)
 CORS(app)
@@ -14,6 +15,16 @@ CORS(app)
 
 MODEL_PATH = "amazon_efficientnetb0.keras"
 THRESHOLD = 0.20
+
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
+ALERT_PHONE_NUMBER = os.getenv("ALERT_PHONE_NUMBER")
+
+twilio_client = Client(
+    TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN
+)
 
 LABELS = [
     "agriculture",
@@ -111,6 +122,40 @@ def home():
 # Prediction endpoint
 # -----------------------------
 
+def send_alert(predictions):
+    risk_classes = {
+        "artisinal_mine",
+        "conventional_mine",
+        "slash_burn",
+        "selective_logging"
+    }
+
+    detected_risks = [
+        p for p in predictions
+        if p["label"] in risk_classes
+    ]
+
+    if not detected_risks:
+        return
+
+    risk_text = "\n".join(
+        f'{p["label"]}: {p["confidence"]}%'
+        for p in detected_risks
+    )
+
+    message = (
+        "🚨 Amazon Rainforest Risk Alert\n\n"
+        "Potential environmental-risk pattern detected:\n"
+        f"{risk_text}\n\n"
+        "Further human verification is recommended."
+    )
+
+    twilio_client.messages.create(
+        body=message,
+        from_=TWILIO_PHONE_NUMBER,
+        to=ALERT_PHONE_NUMBER
+    )
+
 @app.route("/predict", methods=["POST"])
 def predict():
 
@@ -127,6 +172,9 @@ def predict():
         image = Image.open(image_file)
 
         predictions = predict_image(image)
+
+        # Automatically send SMS if a risk class is detected
+        send_alert(predictions)
 
         return jsonify({
             "predictions": predictions
